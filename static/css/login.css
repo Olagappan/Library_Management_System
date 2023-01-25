@@ -1,0 +1,23 @@
+body
+{
+    background-color:grey;
+    color:Black;
+}
+
+input,select
+{
+    background-color:Maroon;
+    color:white;
+}
+
+h2
+{
+    /*background-color:Blue;*/
+    color:Black;
+}
+/*
+div
+{
+    background-color:Green;
+    color:Red ;
+}*/
