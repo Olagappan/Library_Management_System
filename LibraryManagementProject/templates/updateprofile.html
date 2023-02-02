@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+ <form method="post">
+     {% csrf_token %}
+        <table align="center">
+            <tr>
+            <td>Student Name:</td>
+            <td><input type="text" name="txtName" value="{{ data.Stud_Name }}"></td>
+        </tr>
+        <tr>
+            <td>Student Phno:</td>
+            <td><input type="number" name="txtPhno" pattern="([+][9][1][1])?[6-9]{1}/d{9}" value="{{ data.Stud_Phno }}"></td>
+        </tr>
+        <tr>
+            <td>Student Course:</td>
+            <td>
+                <input type="text" name="txtCourse" value="{{ data.Stud_Course }}" disabled>
+            </td>
+        </tr>
+        <tr>
+            <td>Student Semster</td>
+            <td>
+                <input type="number" name='txtSem' min="1" max="8"  value="{{ data.Stud_Sem }}">
+            </td>
+        </tr>
+        <tr>
+            <td>Student Password</td>
+            <td>
+                <input type="password" name='txtPswd' value="{{ data.Stud_pass }}">
+            </td>
+        </tr>
+        <tr>
+            <td colspan="2" align="center">
+                <input type="submit" name="btnSub" value="UpdateProfile">
+            </td>
+        </tr>
+        </table>
+
+    </form>
+</body>
+</html>
