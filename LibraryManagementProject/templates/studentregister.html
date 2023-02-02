@@ -1,0 +1,54 @@
+{% load static %}
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link href="{% static 'css/login.css' %}" rel="stylesheet">
+</head>
+<body>
+<h2 align="center">Student Registration page</h2>
+ <form action = 'sregdata' method="post">
+     {% csrf_token %}
+     <h3 style="color:red" align="center">{{data}}</h3>
+        <table align="center">
+    <tr>
+        <td>UserName:</td>
+        <td><input type = "text" name ="txtname" placeholder="name"></td>
+        </tr>
+          <tr>
+        <td>Phno:</td>
+        <td><input type = "number" name ="txtnum" placeholder="number"></td>
+        </tr>
+
+            <tr>
+        <td>Sem:</td>
+        <td><input type = "number" name ="txtsem" placeholder="sem"></td>
+        </tr>
+
+            <tr>
+        <td>Password:</td>
+        <td><input type = "password" name ="txtpawd" placeholder="password"></td>
+        </tr>
+             <tr>
+        <tr>
+        <td>Course:</td>
+                <td>
+                    <select name="ddlcourse">
+                        {% for i in course %}
+                            <option>{{i}}</option>
+                        {% endfor %}
+                </select>
+                </td>
+                </tr>
+
+        <tr>
+        <td><input type = "submit" name = "btnsub" value = "Register"></td>
+    </tr>
+        </table>
+
+    </form>
+</body>
+</html>

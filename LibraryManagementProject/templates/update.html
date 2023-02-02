@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+ <form  method="post">
+     {% csrf_token %}
+        <table>
+    <tr>
+        <td>BookName:</td>
+        <td><input type = "text" value="{{data.Books_Name}}" name ="txtbook" placeholder="Mname"></td>
+        </tr>
+
+    <tr>
+        <td>AuthorName:</td>
+        <td><input type = "text" value="{{data.Author_Name}}" name ="txtaname" placeholder="Hname"></td>
+        </tr>
+
+               <tr>
+        <td>Course:</td>
+                <td>
+                    <select name="ddlcourse">
+                        {% for i in Course_data %}
+                            <option>{{i.Course_Name}}</option>
+                        {% endfor %}
+                </select>
+                </td>
+                </tr>
+
+        <tr>
+        <td><input type = "submit" name = "btnsub" value = "Submit"></td>
+    </tr>
+        </table>
+
+    </form>
+</body>
+</html>
