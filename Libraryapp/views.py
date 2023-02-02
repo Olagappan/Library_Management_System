@@ -1,14 +1,19 @@
-from django.contrib.auth import authenticate
+from django.contrib.auth import authenticate, login, logout
+from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
 from django.db.models import Q
 from django.shortcuts import render, redirect
+from django.views.decorators.cache import cache_control, never_cache
 
 from Libraryapp.models import Student, Course, Books, Issue_Book
 
 
 # Create your views here.
+
 def admin_reg_fun(request):
     return render(request,'adminregister.html',{'data':''})
+
+
 
 
 def admin_regdata_fun(request):
@@ -22,9 +27,13 @@ def admin_regdata_fun(request):
         u1.save()
         return redirect('log')
 
+
+
 def student_reg_fun(request):
     c1=Course.objects.all()
     return render(request,'studentregister.html',{'course':c1})
+
+
 
 def student_regdata_fun(request):
         user_name =request.POST['txtname']
@@ -41,18 +50,20 @@ def student_regdata_fun(request):
             s1.save()
             return redirect('log')
 
+
+
 def adminhome(request):
     return render(request,'adminhome.html')
 
-def studenthome(request):
-    return render(request,'studenthome.html')
 
 
 def log_fun(request):
-    return render(request,'login.html',{'data':''})
+    return render(request,'login.html')
+
 
 
 def logdata_fun(request):
+    s1 = Student.objects.get(Stud_Name=request.session['name'])
     user_name = request.POST['txtusername']
     user_pswd = request.POST['txtpawd']
     user1=authenticate(username = user_name,password = user_pswd)
@@ -62,18 +73,24 @@ def logdata_fun(request):
 
 
     elif Student.objects.filter(Q(Stud_Name=user_name) & Q(Stud_pass=user_pswd)).exists():
-        request.session['name']=user_name
-        return render(request, 'studenthome.html')
+        request.session['name'] = user_name
+        return render(request, 'studenthome.html',{'data':s1})
 
     else:
         return render(request,'login.html',{'data':'User is not super user'})
 
+
+
 def home_fun(request):
     return redirect('adminhome')
+
+
 
 def addbook_fun(request):
     c1=Course.objects.all()
     return render(request,'addbook.html',{'data':c1})
+
+
 
 def readbookdata_fun(request):
     b1=Books()
@@ -89,6 +106,8 @@ def displaybook_fun(request):
     b1=Books.objects.all()
     return render(request,'displaybook.html',{'data':b1})
 
+
+
 def update_fun(request,id):
     b1=Books.objects.get(id=id)
     course=Course.objects.all()
@@ -101,18 +120,24 @@ def update_fun(request,id):
     return render(request,'update.html',{'data':b1,'Course_data':course})
 
 
+
 def delete_fun(request,id):
     b1=Books.objects.get(id=id)
     b1.delete()
     return redirect('display')
 
+
+
 def log_out_fun(request):
     return redirect('log')
+
 
 
 def assign_fun(request):
     c1 = Course.objects.all()
     return render(request,'assignbook.html',{'course':c1})
+
+
 
 def assignbook_fun(request):
 
@@ -126,6 +151,7 @@ def assignbook_fun(request):
     return render(request,'assignbook.html',{'course':c1})
 
 
+
 def assignbookdata_fun(request):
 
     i1=Issue_Book()
@@ -136,9 +162,12 @@ def assignbookdata_fun(request):
     i1.save()
     return redirect('assign')
 
+
+
 def issuebook_fun(request):
     i1=Issue_Book.objects.all()
     return render(request,'issuebook.html',{'data':i1})
+
 
 
 def update2_fun(request,id):
@@ -154,15 +183,44 @@ def update2_fun(request,id):
     return render(request,'update2.html',{'data':i1,'book':b1})
 
 
+
 def delete2_fun(request,id):
     i1=Issue_Book.objects.get(id=id)
     i1.delete()
     return redirect('issue')
 
 
+
+#student functions
+
+
+def studenthome(request):
+    s1 = Student.objects.get(Stud_Name=request.session['name'])
+    return render(request,'studenthome.html',{'data':s1})
+
+
+
 def issuebkdet_fun(request):
     b1=Issue_Book.objects.filter(Stud_Name=Student.objects.get(Stud_Name=request.session['name']))
     return render(request,'issuedbkdet.html',{'data':b1 })
+
+
+
+def Student_pro(request):
+    s1=Student.objects.get(Stud_Name=request.session['name'])
+    return render(request,'profile.html',{'data':s1})
+
+
+def Update_pro(request,id):
+    s1=Student.objects.get(id=id)
+    if request.method == 'POST':
+        s1.Stud_Name =request.POST['txtName']
+        s1.Stud_Phno =request.POST['txtPhno']
+        s1.Stud_Sem =request.POST['txtSem']
+        s1.Stud_pass =request.POST['txtPswd']
+        s1.save()
+        return redirect('studenprofile')
+    return render(request,'updateprofile.html',{'data':s1})
 
 
 def logoutstd_fun(request):
